@@ -39,4 +39,4 @@ env_file = os.getenv('GITHUB_ENV')
 
 with open(env_file, "a") as myfile:
     myfile.write("sessionId=" + data['userInfo']['sessionId'] + "\n")
-    myfile.write("uat_sessionId=" + uat_data['userInfo']['sessionId'] + "\n")
+    myfile.write("uat_sessionId=" + data['userInfo']['sessionId'] + "\n")
