@@ -18,7 +18,7 @@ on:
 
 env:
   IICS_LOGIN_URL: https://dm-us.informaticacloud.com
-  IICS_POD_URL: https://usw5.dm-us.informaticacloud.com/saas
+  IICS_POD_URL: https://na1.dm-us.informaticacloud.com/saas
  
   IICS_USERNAME: ${{ secrets.IICS_USERNAME }}
   IICS_PASSWORD: ${{ secrets.IICS_PASSWORD }}
@@ -72,13 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: sarvangj/informatica
-          token: ${{ secrets.GH_TOKEN }}
-          path: informatica
-
-      - uses: actions/checkout@v3
-        with:
-          path: informatica/prod
+          path: prod
 
       # Install python and dependent modules
       - uses: actions/setup-python@v3
@@ -91,13 +85,13 @@ jobs:
             pip install requests
 
       - name: Set default username
-        run: git config --global user.email "sarvang.jain@zs.com"; git config --global user.name "Sarvang Jain"
+        run: git config --global user.email "bbird@informatica.com"; git config --global user.name "Brandon Bird"
 
       - name: Commit changes to UAT
-        run: cd ./IICS-demo; git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
+        run: cd ./IICS-CDP-CICD-demo; git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
 
       - name: Get latest UAT commit hash
-        run: cd ./IICS-demo; git pull; echo "UAT_COMMIT_HASH=$(git log -1 --pretty=format:%H)" >> $GITHUB_ENV
+        run: cd ./IICS-CDP-CICD-demo; git pull; echo "UAT_COMMIT_HASH=$(git log -1 --pretty=format:%H)" >> $GITHUB_ENV
       
       - name: Login to UAT
         run: |
@@ -105,4 +99,3 @@ jobs:
 
       - name: Sync and test UAT deployment
         run: python ./iics-promotion-pipeline/scripts/infa_update_and_test.py
-
