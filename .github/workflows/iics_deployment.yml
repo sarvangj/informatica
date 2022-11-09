@@ -53,12 +53,10 @@ jobs:
         run: |
             python -m pip install --upgrade pip
             pip install -r requirements.txt
-
       # Runs a single command using the runners shell
       - name: Login to development
         run: |
             python ./scripts/infa_login.py
-
       - name: Test Committed Mapping Tasks
         run: python ./scripts/infa_get_updates.py
 
@@ -88,7 +86,9 @@ jobs:
         run: git config --global user.email "sarvang.jain@zs.com"; git config --global user.name "Sarvang Jain"
 
       - name: Commit changes to UAT
-        run: cd ./demo-dir; git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
+        run: |
+            ls
+            cd ./demo-dir; git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
 
       - name: Get latest UAT commit hash
         run: cd ./demo-dir; git pull; echo "UAT_COMMIT_HASH=$(git log -1 --pretty=format:%H)" >> $GITHUB_ENV
@@ -96,6 +96,5 @@ jobs:
       - name: Login to UAT
         run: |
             python ./iics-promotion-pipeline/scripts/infa_login.py
-
       - name: Sync and test UAT deployment
         run: python ./iics-promotion-pipeline/scripts/infa_update_and_test.py
