@@ -85,10 +85,14 @@ jobs:
       - name: Set default username
         run: git config --global user.email "sarvang.jain@zs.com"; git config --global user.name "Sarvang Jain"
 
+      - name: LS
+        run: ls
+
+      - name: Status
+        run: git status
+
       - name: Commit changes to UAT
-        run: |
-            ls
-            cd ./demo-dir; git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
+        run: cd ./demo-dir; git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
 
       - name: Get latest UAT commit hash
         run: cd ./demo-dir; git pull; echo "UAT_COMMIT_HASH=$(git log -1 --pretty=format:%H)" >> $GITHUB_ENV
