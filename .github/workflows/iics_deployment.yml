@@ -63,7 +63,6 @@ jobs:
 
   cherry_pick:
     name: Cherry pick commit 
-    needs: dev_build
     runs-on: ubuntu-latest
     
     steps:
