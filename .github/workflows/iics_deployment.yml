@@ -69,9 +69,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: prod
 
+      - name: cherry-pick
+        run: |
+            git switch prod
+      # git cherry-pick ${COMMIT_HASH}
+            
       # Install python and dependent modules
       - uses: actions/setup-python@v3
         with:
@@ -86,13 +89,14 @@ jobs:
         run: git config --global user.email "sarvang.jain@zs.com"; git config --global user.name "Sarvang Jain"
 
       - name: Commit changes to UAT
-        run: cd prod/demo-dir; git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
+        run: git fetch --all; git cherry-pick --strategy=recursive -X theirs ${COMMIT_HASH}; git push
 
       - name: Get latest UAT commit hash
-        run: cd prod/demo-dir; git pull; echo "UAT_COMMIT_HASH=$(git log -1 --pretty=format:%H)" >> $GITHUB_ENV
+        run: git pull; echo "UAT_COMMIT_HASH=$(git log -1 --pretty=format:%H)" >> $GITHUB_ENV
       
       - name: Login to UAT
         run: |
             python ./iics-promotion-pipeline/scripts/infa_login.py
+            
       - name: Sync and test UAT deployment
         run: python ./iics-promotion-pipeline/scripts/infa_update_and_test.py
