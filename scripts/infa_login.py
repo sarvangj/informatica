@@ -15,7 +15,7 @@ PASSWORD = os.environ['IICS_PASSWORD']
 UAT_USERNAME = os.environ['UAT_IICS_USERNAME']
 UAT_PASSWORD = os.environ['UAT_IICS_PASSWORD']
 
-print(UAT_USERNAME, UAT_PASSWORD)
+print(UAT_USERNAME, UAT_PASSWORD, flush=True)
 
 URL = "https://dm-us.informaticacloud.com/saas/public/core/v3/login"
 BODY = {"username": USERNAME,"password": PASSWORD}
@@ -26,7 +26,7 @@ if r.status_code != 200:
     print("Caught exception: " + r.text)
 
 UAT_BODY = BODY = {"username": UAT_USERNAME,"password": UAT_PASSWORD}
-print(BODY)
+print(BODY, flush=True)
 u = requests.post(url = URL, json = BODY)
 
 if u.status_code != 200:
