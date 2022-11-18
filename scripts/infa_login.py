@@ -17,14 +17,14 @@ UAT_PASSWORD = os.environ['UAT_IICS_PASSWORD']
 
 URL = "https://dm-us.informaticacloud.com/saas/public/core/v3/login"
 BODY = {"username": USERNAME,"password": PASSWORD}
-
+print(BODY)
 r = requests.post(url = URL, json = BODY)
 
 if r.status_code != 200:
     print("Caught exception: " + r.text)
 
 UAT_BODY = BODY = {"username": UAT_USERNAME,"password": UAT_PASSWORD}
-
+print(BODY)
 u = requests.post(url = URL, json = BODY)
 
 if u.status_code != 200:
@@ -39,4 +39,4 @@ env_file = os.getenv('GITHUB_ENV')
 
 with open(env_file, "a") as myfile:
     myfile.write("sessionId=" + data['userInfo']['sessionId'] + "\n")
-    myfile.write("uat_sessionId=" + data['userInfo']['sessionId'] + "\n")
+    myfile.write("uat_sessionId=" + uat_data['userInfo']['sessionId'] + "\n")
